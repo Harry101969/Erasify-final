@@ -9,8 +9,8 @@ import { FILE } from "../../dashboard/_components/FileList";
 import Canvas from "../_components/Canvas";
 function Workspace({ params }: { params: { fileId: string } }) {
   const [triggerSave, setTriggerSave] = useState(false);
-  const [fileData, setFileData] = useState<FILE | null>(null);
-  const [fileId, setFileId] = useState<string | null>(null);
+  const [fileData, setFileData] = useState<FILE | any>();
+  const [fileId, setFileId] = useState<string | any>();
   const convex = useConvex();
 
   useEffect(() => {
@@ -63,7 +63,11 @@ function Workspace({ params }: { params: { fileId: string } }) {
             fileId={fileId}
             fileData={fileData}
           /> */}
-          <Canvas onSaveTrigger={triggerSave} fileId={fileId} fileData={fileData}/>
+          <Canvas
+            onSaveTrigger={triggerSave}
+            fileId={fileId}
+            fileData={fileData}
+          />
         </div>
       </div>
     </div>
