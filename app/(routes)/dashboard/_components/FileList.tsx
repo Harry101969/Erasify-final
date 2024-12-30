@@ -23,6 +23,7 @@ export interface FILE {
   whiteboard: string;
   _id: string;
   _creationTime: number;
+  files?: string;
 }
 function FileList() {
   const { fileList_, setFileList_ } = useContext(FileListContext);

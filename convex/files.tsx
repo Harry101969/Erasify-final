@@ -46,10 +46,12 @@ export const updateWhiteboard = mutation({
   args: {
     _id: v.id("files"),
     whiteboard: v.string(),
+    files: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const result = await ctx.db.patch(args._id, {
       whiteboard: args.whiteboard,
+      files: args.files,
     });
     return result;
   },
