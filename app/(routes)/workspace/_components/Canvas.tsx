@@ -10,34 +10,63 @@
 //   return <Excalidraw />;
 // }
 "use client";
-import React from "react";
-import { Excalidraw,MainMenu,WelcomeScreen } from "@excalidraw/excalidraw";
-const Canvas = () => {
+import React, { useState, useEffect } from "react";
+import { Excalidraw, WelcomeScreen } from "@excalidraw/excalidraw";
+import { FILE } from "../../dashboard/_components/FileList";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+const Canvas = ({
+  onSaveTrigger,
+  fileId,
+  fileData,
+}: {
+  onSaveTrigger: any;
+  fileId: any;
+  fileData: FILE;
+}) => {
+  const [whiteBoardData, setWhiteBoardData] = useState<any>();
+
+  const saveWhiteboard = () => {
+    updateWhiteBoard({
+      _id: fileId,
+      whiteboard: JSON.stringify(whiteBoardData),
+    }).then((resp) => console.log(resp));
+  };
+  const updateWhiteBoard = useMutation(api.files.updateWhiteboard);
+  useEffect(() => {
+    onSaveTrigger && saveWhiteboard();
+  }, [saveWhiteboard]);
   return (
     <div style={{ height: "670px" }}>
-      <Excalidraw
-        theme="light"
-        onChange={(excalidrawElements, appState, files) =>
-          console.log(excalidrawElements)
-        }
-        UIOptions={{
-          canvasActions: {
-            saveToActiveFile: false,
-          },
-        }}
-      >
-        {/* //Optional */}
-   {/* <MainMenu>
+      {fileData && (
+        <Excalidraw
+          theme="light"
+          initialData={{
+            elements: fileData?.whiteboard && JSON.parse(fileData.whiteboard),
+          }}
+          onChange={(excalidrawElements, appState, files) =>
+            setWhiteBoardData(excalidrawElements)
+          }
+          UIOptions={{
+            canvasActions: {
+              saveToActiveFile: false,
+            },
+          }}
+        >
+          {/* //Optional */}
+          {/* <MainMenu>
     <MainMenu.DefaultItems.ClearCanvas/>
     <MainMenu.DefaultItems.SaveAsImage/>
     <MainMenu.DefaultItems.ChangeCanvasBackground/>
 
    </MainMenu> */}
-   <WelcomeScreen>
-    <WelcomeScreen.Hints.MenuHint/>
-    <WelcomeScreen.Hints.ToolbarHint/>
-   </WelcomeScreen>   
-   </Excalidraw>
+          {/* Add the custom welcome screen */}
+          {/* <WelcomeScreen.Hints.Menubar/>
+    <WelcomeScreen.Hints.Toolbar/>
+   </WelcomeScreen>    */}
+          <WelcomeScreen />
+        </Excalidraw>
+      )}
     </div>
   );
 };

@@ -63,7 +63,7 @@ function Workspace({ params }: { params: { fileId: string } }) {
             fileId={fileId}
             fileData={fileData}
           /> */}
-          <Canvas />
+          <Canvas onSaveTrigger={triggerSave} fileId={fileId} fileData={fileData}/>
         </div>
       </div>
     </div>
